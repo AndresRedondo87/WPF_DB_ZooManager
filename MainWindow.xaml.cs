@@ -14,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Data.SqlClient;    // für SQL Verbindung
+using System.Data;
+
 namespace WPF_DB_ZooManager
 {
     /// <summary>
@@ -21,8 +24,13 @@ namespace WPF_DB_ZooManager
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// Datenbank Verbindung mit den ConnectionString
+        /// es braucht zuerst ein "using System.Data.SqlClient;    // für SQL Verbindung" ganz oben hinzugefügt zu bekommen.
+        /// Hier deklariert so wir es in unsere neue Methoden verwenden können!
+        SqlConnection sqlConnection;
         public MainWindow()
         {
+
             InitializeComponent();
             //////////////////////////////////////////////////////////
             /// VIDEO 105: DIE DB TEIL HIER ERKLÄRT
@@ -81,6 +89,59 @@ namespace WPF_DB_ZooManager
 
             /// Um SQL Abfragen zu machen: rechte Maus auf unsere Datenverbindung und "Neue Abfrage" auswählen.
             /// Das offnet uns eine neue SQL Query.
+            /// 
+
+
+
+            /// Datenbank Verbindung mit den ConnectionString
+            /// es braucht zuerst ein "using System.Data.SqlClient;    // für SQL Verbindung" ganz oben hinzugefügt zu bekommen.
+            /// 
+            /// am anfang von MainWindow deklarieren wir den:  SqlConnection sqlConnection;
+            /// wir setzen es...
+            sqlConnection = new SqlConnection(connectionString);
+
+            //wir rufen die Methode um die Zoos angezeigt zu bekommen:
+            ShowZoos();
+
+
+        }
+
+        //wir erstellen eine Methode um die Daten azuzeigen.
+        // in solche Methoden kann viel schief gehen... viele Exceptions könnte kommen, so am Besten IMMER mit try and catch blocks arbeiten.
+        public void ShowZoos()
+        {
+            try
+            {
+                //string query = "SELECT * FROM Zoo2"; //UM DIE EXCEPTIONS TRYCATCH TESTEN
+                string query = "SELECT * FROM Zoo2";     //wir setzen einfach den SQL Query inhalt in ein string.
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, sqlConnection);   //SqlDataAdapter mit unsere Query und die Connection...
+                                                                                            //damit können wir die DB Tabelle als ein C# Objekt verwenden!
+
+                using (sqlDataAdapter)
+                {
+                    //hier können wir die DataTable verwenden...
+                    DataTable zooTable = new DataTable();
+                    sqlDataAdapter.Fill(zooTable);      //zooTable bekommt die Tabelle von DB
+
+
+                    //listZoos ist der Name unserer ListBox...:
+                    //welche Informationen der Tabelle in unserem DataTablesollen in unsere Listbox angezeigt werden
+                    listZoos.DisplayMemberPath = "Location";
+                    //welche Wert soll gegeben werden, wenn eines unsere Items von der ListBox ausgewählt wird
+                    listZoos.SelectedValuePath = "Id";
+
+                    /// festlegen dass DataTable ruft die Tabelle zooTable, 
+                    /// die eigentlich von unserer adapter kommt, und deren Query "SELECT * FROM Zoo"; war in der ConnectionString zu unserer DB
+                    listZoos.ItemsSource = zooTable.DefaultView;
+                }
+
+            }
+            catch (Exception e)
+            {
+                string exceptionTitle = "WIR HABEN EINE EXCEPTION AUSGELÖST! App nicht richtig geladen!";
+                MessageBox.Show(e.ToString(), exceptionTitle, MessageBoxButton.OK,MessageBoxImage.Exclamation);
+            }
+            
         }
     }
 }
