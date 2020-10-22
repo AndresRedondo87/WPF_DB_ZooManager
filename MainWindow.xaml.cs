@@ -77,6 +77,10 @@ namespace WPF_DB_ZooManager
 
             string connectionString = ConfigurationManager.ConnectionStrings["WPF_DB_ZooManager.Properties.Settings.AR_CSHARP_DBConnectionString"].ConnectionString;
             /// Das hier macht die Verbindung zum Datenbank
+            /// 
+
+            /// Um SQL Abfragen zu machen: rechte Maus auf unsere Datenverbindung und "Neue Abfrage" auswählen.
+            /// Das offnet uns eine neue SQL Query.
         }
     }
 }
