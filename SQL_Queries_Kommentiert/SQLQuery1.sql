@@ -19,5 +19,7 @@ SELECT * FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.Zo
 --tests for remove Animal from Zoo
 DELETE FROM ZooAnimal WHERE ZooId = @ZooId AND AnimalId = @AnimalId;
 
-DELETE FROM ZooAnimal WHERE ZooId = 3 AND AnimalId = 6;
-SELECT *FROM ZooAnimal WHERE ZooId = 3 AND AnimalId = 6;
+DELETE FROM ZooAnimal WHERE ZooId = 2 AND AnimalId = 6; --löscht ALLE tiere von ein Art aus einem Zoo
+
+DELETE TOP (1) FROM ZooAnimal WHERE ZooId = 2 AND AnimalId = 6;----löscht NUR EINE tiere von ein Art aus einem Zoo
+SELECT *FROM ZooAnimal WHERE ZooId = 2 AND AnimalId = 6;

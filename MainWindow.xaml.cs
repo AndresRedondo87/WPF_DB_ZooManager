@@ -344,7 +344,7 @@ namespace WPF_DB_ZooManager
             /// kein "leere" Löschung vermeiden wenn es überhaupt gehen könnte...
             if (listAssociatedAnimals.SelectedItem == null)  
             {
-                MessageBox.Show("Select an Animal from a Zoo first!");
+                MessageBox.Show("First you need to select an Animal from a Zoo!");
                 return;
             }
             try
@@ -356,7 +356,9 @@ namespace WPF_DB_ZooManager
                 /// So sieht ein Delete aus:
                 /// string query = "DELETE FROM Zoo WHERE Id = @ZooId";
                 /// Dann:
-                string query = "DELETE FROM ZooAnimal WHERE ZooId = @ZooId AND AnimalId = @AnimalId";
+                /// string query = "DELETE FROM ZooAnimal WHERE ZooId = @ZooId AND AnimalId = @AnimalId";
+                /// ERWEITERT: nur ein einzelnes Tier Löschen. Falls es mehrere gleiche tiere gibt, wir werden immer nur eins Löschen
+                string query = "DELETE TOP (1) FROM ZooAnimal WHERE ZooId = @ZooId AND AnimalId = @AnimalId";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlConnection.Open();
 
