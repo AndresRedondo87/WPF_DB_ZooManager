@@ -361,13 +361,8 @@ namespace WPF_DB_ZooManager
             }
             try
             {
-                //string query = "DELETE FROM ZooAnimalsTabellenameAnstattZooAnimals VALUES (@ZooId,@AnimalId)"; 
-                //// um die Exceptions zu testen und erkennen mit Falsche Tabellenname
-                /// SQL QUERY SYNTAX FOR DELETE VÖLLIG FALSCH LOL
-                /// string query = "DELETE FROM ZooAnimal VALUES (@ZooId,@AnimalId)";
                 /// So sieht ein Delete aus:
-                /// string query = "DELETE FROM Zoo WHERE Id = @ZooId";
-                /// Dann:
+                /// string query = "DELETE FROM Zoo WHERE Id = @ZooId"; /// Dann:
                 /// string query = "DELETE FROM ZooAnimal WHERE ZooId = @ZooId AND AnimalId = @AnimalId";
                 /// ERWEITERT: nur ein einzelnes Tier Löschen. Falls es mehrere gleiche tiere gibt, wir werden immer nur eins Löschen
                 string query = "DELETE TOP (1) FROM ZooAnimal WHERE ZooId = @ZooId AND AnimalId = @AnimalId";
@@ -375,12 +370,7 @@ namespace WPF_DB_ZooManager
                 sqlConnection.Open();
 
                 sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedValue);
-                /// sqlCommand.Parameters.AddWithValue("@AnimalId", listAllAnimals.SelectedValue);
-                /// hier hatte ich auch die Falsche @AnimalId",  aus listAllAnimals.SelectedValue gesetzt.
-                /// Es MUSS aus listAssociatedAnimals SEIN!!
-                ///  War ein Dummer Fehler nur!
                 sqlCommand.Parameters.AddWithValue("@AnimalId", listAssociatedAnimals.SelectedValue);
-
                 sqlCommand.ExecuteScalar();
                 // sqlCommand.ExecuteScalar NICHT VERGESSEN! SONST WIRD DEN COMMANDO NIE AUSGEFÜHRT!
             }
