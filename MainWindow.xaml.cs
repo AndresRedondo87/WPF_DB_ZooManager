@@ -413,7 +413,45 @@ namespace WPF_DB_ZooManager
         }
         private void addAnimalToZoo_Click(object sender, RoutedEventArgs e)
         {
+            //  selber copypasversuch:
+            if (listAllAnimals.SelectedItem == null || listZoos.SelectedItem == null)  //kein "leere" Zuweisung erlaubt
+            {
+                MessageBox.Show("Select an Animal to add and a Zoo first!");
+                return;
+            }
+            try
+            {
+                //MessageBox.Show("Add Animal"); //geht
 
+                //string query = "INSERT INTO ZooAnimalsTabellenameAnstattZooAnimals VALUES (@ZooId,@AnimalId)"; 
+                //// um die Exceptions zu testen und erkennen mit Falsche Tabellenname
+
+                string query = "INSERT INTO ZooAnimal VALUES (@ZooId,@AnimalId)";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+
+                ////dies hier geht gar nicht, falsche Wert Datatype übertragen!!
+                //sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedItem);
+
+                //Korrigiert: SelectedValue ANSTATT SelectedItem.
+                // SelectedValue übernimmt die Ids, SelectedItem der Inhalt!! 
+                sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedValue);
+                sqlCommand.Parameters.AddWithValue("@AnimalId", listAllAnimals.SelectedValue);
+
+                sqlCommand.ExecuteScalar();
+                // sqlCommand.ExecuteScalar NICHT VERGESSEN! SONST WIRD DEN COMMANDO NIE AUSGEFÜHRT!
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show(exe.ToString(), "exception in Add Animal to Zoo Button", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                //verbindung MUSS geschlossen werden.
+                sqlConnection.Close();
+                //ShowAllAnimals();// war falsch
+                ShowAssociatedAnimals(); //anzeige aktualisieren
+            }
         }
         private void deleteAnimal_Click(object sender, RoutedEventArgs e)
         {
