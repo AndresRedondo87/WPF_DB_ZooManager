@@ -8,11 +8,11 @@
         Title="MainWindow" Height="400" Width="574.667">
     <Grid Margin="0,0,0,-2">
         <Label  Content="Zooliste" HorizontalAlignment="Left" Margin="20,6,0,0" VerticalAlignment="Top" Height="31" Width="160" FontWeight="Bold"/>
-        <ListBox Name="listZoos" SelectionChanged="ListZoos_SelectionChanged" HorizontalAlignment="Left" Margin="20,37,0,169" Width="114"/>
+        <ListBox Name="listZoos" SelectionChanged="ListZoos_SelectionChanged" MouseUp="listZoos_MouseUp" HorizontalAlignment="Left" Margin="20,37,0,169" Width="114"/>
         <Label  Content="Tiere in augewähltem Zoo" HorizontalAlignment="Left" Margin="213,6,0,0" VerticalAlignment="Top" Height="31" Width="160" FontWeight="Bold"/>
-        <ListBox x:Name="listAssociatedAnimals" SelectionChanged="listAssociatedAnimals_SelectionChanged" HorizontalAlignment="Left" Margin="213,37,0,169" Width="114"/>
+        <ListBox x:Name="listAssociatedAnimals" SelectionChanged="listAssociatedAnimals_SelectionChanged" MouseUp="listAssociatedAnimals_MouseUp" HorizontalAlignment="Left" Margin="213,37,0,169" Width="114"/>
         <Label  Content="Tierliste" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top" Height="31" Width="160" FontWeight="Bold" d:LayoutOverrides="HorizontalAlignment"/>
-        <ListBox x:Name="listAllAnimals" SelectionChanged="ListAnimals_SelectionChanged" HorizontalAlignment="Right" Margin="0,70,20,65" Width="150" d:LayoutOverrides="HorizontalAlignment"/>
+        <ListBox x:Name="listAllAnimals" SelectionChanged="ListAnimals_SelectionChanged" MouseUp="listAllAnimals_MouseUp" HorizontalAlignment="Right" Margin="0,70,20,65" Width="150" d:LayoutOverrides="HorizontalAlignment"/>
 
         <!--Buttons und TextBox!-->
         <Button x:Name="DeleteZoo" Content="Delete Zoo" HorizontalAlignment="Left" Margin="20,209,0,118" Width="114" Click="DeleteZoo_Click"/>

@@ -630,6 +630,36 @@ namespace WPF_DB_ZooManager
         }
 
 
+        /// <summary>
+        ///  Erweiterung von ein Student. Beim clicken auf ein andere schon vorgeclickte imput nach ein andere click in eine andere Liste,
+        ///  War sie nicht aktualisiert. Mit diese drei evets bei mouseup, werden die doch aktualisiert, 
+        ///  wie es so funktioniert weiß ich noch nicht ganz sicher, es klappt aber komplett sauber.
+        /// </summary>
+        private void listZoos_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DataRowView row = (DataRowView)listZoos.SelectedItem;
+            if (row != null)
+            {
+                myTextBox.Text = row["Location"].ToString();
+            }
+        }
+        private void listAllAnimals_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DataRowView row = (DataRowView)listAllAnimals.SelectedItem;
+            if (row != null)
+            {
+                myTextBox.Text = row["Name"].ToString();
+            }
+        }
+        private void listAssociatedAnimals_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DataRowView row = (DataRowView)listAssociatedAnimals.SelectedItem;
+            if (row != null)
+            {
+                myTextBox.Text = row["Name"].ToString();//wird es gehen? JA ES GEHT!!
+            }
+        }
+
         //...
     }
 }
