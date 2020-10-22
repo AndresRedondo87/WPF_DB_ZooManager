@@ -166,6 +166,43 @@ namespace WPF_DB_ZooManager
         { 
             try
             {
+                //MEINE OPTION: Funktioniert auch und "Einfacher":
+                string query = $"SELECT a.Name FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = {listZoos.SelectedValue}";
+                //string query = $"SELECT * FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = @ZooId";
+                //@ZooId wäre eine Variable!!
+                // NEUEN SQL Query inhalt in ein string. KORRIGIERT
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, sqlConnection);
+                // SqlDataAdapter mit unsere Query und die Connection...
+                // damit können wir die DB Tabelle als ein C# Objekt verwenden!
+
+                using (sqlDataAdapter)
+                {
+                    //hier können wir die DataTable verwenden...
+                    DataTable associatedAnimalsTable = new DataTable();
+                    sqlDataAdapter.Fill(associatedAnimalsTable);      //zooTable bekommt die Tabelle von DB
+
+
+                    //listAssociatedAnimals ist der Name unserer ListBox...:
+                    //welche Informationen der Tabelle in unserem DataTablesollen in unsere Listbox angezeigt werden
+                    listAssociatedAnimals.DisplayMemberPath = "Name";
+                    // HIER HATTE ICH IMMER NOCH LOCATION,DESWEGEN BLIEB ES LEER!!
+                    //welche Wert soll gegeben werden, wenn eines unsere Items von der ListBox ausgewählt wird
+                    listAssociatedAnimals.SelectedValuePath = "Id";
+
+                    /// festlegen dass DataTable ruft die Tabelle zooTable, 
+                    /// die eigentlich von unserer adapter kommt, und deren Query "SELECT * FROM Zoo"
+                    /// war in der ConnectionString zu unserer DB
+                    listAssociatedAnimals.ItemsSource = associatedAnimalsTable.DefaultView;
+                }
+
+
+
+                //ENDE MEINE OPTION
+
+
+
+                //LEHRER OPTION:
+                /*
                 //string query = $"SELECT a.Name FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = {zooId}";
                 string query = $"SELECT * FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = @ZooId";
                 //@ZooId ist eine Variable!!
@@ -200,7 +237,8 @@ namespace WPF_DB_ZooManager
                     /// war in der ConnectionString zu unserer DB
                     listAssociatedAnimals.ItemsSource = associatedAnimalsTable.DefaultView;
                 }
-
+                */
+                //ENDE LEHRER OPTION
             }
             catch (Exception e)
             {
