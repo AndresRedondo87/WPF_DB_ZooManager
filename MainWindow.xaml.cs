@@ -339,7 +339,46 @@ namespace WPF_DB_ZooManager
         }
         private void removeAnimal_Click(object sender, RoutedEventArgs e)
         {
+            ///  selber copypaste-Versuch: 
+            /// MessageBox.Show("Remove Animal from Zoo"); //geht
+            /// kein "leere" Löschung vermeiden wenn es überhaupt gehen könnte...
+            if (listAssociatedAnimals.SelectedItem == null)  
+            {
+                MessageBox.Show("Select an Animal from a Zoo first!");
+                return;
+            }
+            try
+            {
+                //string query = "DELETE FROM ZooAnimalsTabellenameAnstattZooAnimals VALUES (@ZooId,@AnimalId)"; 
+                //// um die Exceptions zu testen und erkennen mit Falsche Tabellenname
+                /// SQL QUERY SYNTAX FOR DELETE VÖLLIG FALSCH LOL
+                /// string query = "DELETE FROM ZooAnimal VALUES (@ZooId,@AnimalId)";
+                /// So sieht ein Delete aus:
+                /// string query = "DELETE FROM Zoo WHERE Id = @ZooId";
+                /// Dann:
+                string query = "DELETE FROM ZooAnimal WHERE ZooId = @ZooId AND AnimalId = @AnimalId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
 
+                sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedValue);
+                /// sqlCommand.Parameters.AddWithValue("@AnimalId", listAllAnimals.SelectedValue);
+                /// hier hatte ich auch die Falsche @AnimalId",  aus listAllAnimals.SelectedValue gesetzt.
+                /// Es MUSS aus listAssociatedAnimals SEIN!!
+                ///  War ein Dummer Fehler nur!
+                sqlCommand.Parameters.AddWithValue("@AnimalId", listAssociatedAnimals.SelectedValue);
+
+                sqlCommand.ExecuteScalar();
+                // sqlCommand.ExecuteScalar NICHT VERGESSEN! SONST WIRD DEN COMMANDO NIE AUSGEFÜHRT!
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show(exe.ToString(), "exception in Remove Animal from Zoo Button", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                sqlConnection.Close();   //verbindung MUSS geschlossen werden.
+                ShowAssociatedAnimals(); //anzeige aktualisieren
+            }
         }
         private void addZoo_Click(object sender, RoutedEventArgs e)
         {
@@ -413,7 +452,7 @@ namespace WPF_DB_ZooManager
         }
         private void addAnimalToZoo_Click(object sender, RoutedEventArgs e)
         {
-            //  selber copypasversuch:
+            //  selber copypaste-Versuch: FAST PERFEKT gekriegt!
             if (listAllAnimals.SelectedItem == null || listZoos.SelectedItem == null)  //kein "leere" Zuweisung erlaubt
             {
                 MessageBox.Show("Select an Animal to add and a Zoo first!");
@@ -455,7 +494,27 @@ namespace WPF_DB_ZooManager
         }
         private void deleteAnimal_Click(object sender, RoutedEventArgs e)
         {
-
+            // copypaste von delete Z o o
+            try
+            {
+                string query = "DELETE FROM Animal WHERE Id = @AnimalId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                //sqlCommand.Parameters.AddWithValue("@AnimalId", listAnimals.SelectedValuePath); //FALSCH beim Autofill aufpassen!!
+                sqlCommand.Parameters.AddWithValue("@AnimalId", listAllAnimals.SelectedValue);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception ex)    //e ist schon verwendet...
+            {
+                MessageBox.Show(ex.ToString(), "exception in Delete Animal Button", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                //verbindung MUSS geschlossen werden.
+                sqlConnection.Close();
+                ShowAllAnimals();// anzeige aktualisieren um zu sehen dass es doch gelöscht worden ist
+                ShowAssociatedAnimals();//brnötigt auch aktualisiert zu werden sein! NICHT VERGESSEN!!
+            }
         }
     }
 }

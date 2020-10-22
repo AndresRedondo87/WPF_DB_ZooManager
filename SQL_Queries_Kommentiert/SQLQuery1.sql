@@ -15,3 +15,9 @@ WHERE za.ZooId = 1
 --tests für ShowAssociatedAnimals
 SELECT * FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = @ZooId
 SELECT * FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = 3
+
+--tests for remove Animal from Zoo
+DELETE FROM ZooAnimal WHERE ZooId = @ZooId AND AnimalId = @AnimalId;
+
+DELETE FROM ZooAnimal WHERE ZooId = 3 AND AnimalId = 6;
+SELECT *FROM ZooAnimal WHERE ZooId = 3 AND AnimalId = 6;
