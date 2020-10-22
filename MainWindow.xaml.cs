@@ -427,8 +427,33 @@ namespace WPF_DB_ZooManager
         }
         private void UpdateZoo_Click(object sender, RoutedEventArgs e)
         {
-            ShowZoos();// anzeige aktualisieren
-            MessageBox.Show("Zoo table updated!");
+            ////Meine alte "Lösung" war falsch, es hatte nur die Anzeige aktualisiert, aber den Inhalt nicht!
+            ////ShowZoos();// anzeige aktualisieren
+            ////MessageBox.Show("Zoo table updated!");
+
+            if (myTextBox.Text == String.Empty || listZoos.SelectedItem == null)  //kein "leere" Zuweisung erlaubt
+            {
+                MessageBox.Show("First select a Zoo and a new Name to Update!");
+                return;
+            }
+            try
+            {
+                string query = "UPDATE Zoo SET Location = @Location WHERE Id = @ZooId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedValue);
+                sqlCommand.Parameters.AddWithValue("@Location", myTextBox.Text);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show(exe.ToString(), "Exception in Update Zoo Button", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                sqlConnection.Close(); //verbindung MUSS geschlossen werden.
+                ShowZoos();  //anzeige aktualisieren
+            }
         }
         private void AddAnimal_Click(object sender, RoutedEventArgs e)
         {
@@ -461,8 +486,33 @@ namespace WPF_DB_ZooManager
         }
         private void UpdateAnimal_Click(object sender, RoutedEventArgs e)
         {
-            ShowAllAnimals();// anzeige aktualisieren
-            MessageBox.Show("Animal table updated!");
+            //ShowAllAnimals();// anzeige aktualisieren
+            //MessageBox.Show("Animal table updated!");
+            ////Meine alte "Lösung" war falsch, es hatte nur die Anzeige aktualisiert, aber den Inhalt nicht!
+            if (myTextBox.Text == String.Empty || listAllAnimals.SelectedItem == null)  //kein "leere" Zuweisung erlaubt
+            {
+                MessageBox.Show("First select an Animal and a new Name to Update!");
+                return;
+            }
+            try
+            {
+                string query = "UPDATE Animal SET Name = @Name WHERE Id = @AnimalId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@AnimalId", listAllAnimals.SelectedValue);
+                sqlCommand.Parameters.AddWithValue("@Name", myTextBox.Text);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show(exe.ToString(), "Exception in Update Animal Button", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                sqlConnection.Close(); //verbindung MUSS geschlossen werden.
+                ShowAllAnimals();  //anzeige aktualisieren
+                ShowAssociatedAnimals();// Alle Animals anzeige ;)
+            }
         }
         private void AddAnimalToZoo_Click(object sender, RoutedEventArgs e)
         {
@@ -542,7 +592,7 @@ namespace WPF_DB_ZooManager
             /// kein "leere" anzeige vermeiden.
             if (listZoos.SelectedItem == null)
             {
-                MessageBox.Show("First you need to select a Zoo to display!");
+                //MessageBox.Show("First you need to select a Zoo to display!"); // Message störend und unnötig!
                 return;
             }
             try
@@ -571,7 +621,7 @@ namespace WPF_DB_ZooManager
             /// kein "leere" anzeige vermeiden.
             if (listAllAnimals.SelectedItem == null)
             {
-                MessageBox.Show("First you need to select an Animal to display!");
+                //MessageBox.Show("First you need to select an Animal to display!"); // Message störend und unnötig!
                 return;
             }
             try
@@ -604,7 +654,7 @@ namespace WPF_DB_ZooManager
             /// deswegen beim Leere Anzeige einfach nichts machen.
             if (listAssociatedAnimals.SelectedItem == null)
             {
-                //MessageBox.Show("First you need to select an Associated Animal to display!");
+                //MessageBox.Show("First you need to select an Associated Animal to display!");// Message störend und unnötig!
                 return;
             }
             try
