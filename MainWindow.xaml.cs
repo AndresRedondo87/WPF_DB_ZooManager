@@ -166,6 +166,7 @@ namespace WPF_DB_ZooManager
         { 
             try
             {
+                /*
                 //MEINE OPTION: Funktioniert auch und "Einfacher":
                 string query = $"SELECT a.Name FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = {listZoos.SelectedValue}";
                 //string query = $"SELECT * FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = @ZooId";
@@ -196,13 +197,13 @@ namespace WPF_DB_ZooManager
                 }
 
 
-
+                */
                 //ENDE MEINE OPTION
 
 
 
                 //LEHRER OPTION:
-                /*
+                
                 //string query = $"SELECT a.Name FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = {zooId}";
                 string query = $"SELECT * FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = @ZooId";
                 //@ZooId ist eine Variable!!
@@ -237,7 +238,7 @@ namespace WPF_DB_ZooManager
                     /// war in der ConnectionString zu unserer DB
                     listAssociatedAnimals.ItemsSource = associatedAnimalsTable.DefaultView;
                 }
-                */
+                
                 //ENDE LEHRER OPTION
             }
             catch (Exception e)
