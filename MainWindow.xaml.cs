@@ -103,10 +103,14 @@ namespace WPF_DB_ZooManager
             //wir rufen die Methode um die Zoos angezeigt zu bekommen:
             ShowZoos();
 
+            //ShowAnimalsInZoo(2);    //1 fest als test...
+            //Jetzt richtig als Selected ZooID Index...
+            // braucht irgendwie noch einen trigger dafür! sollte aber gehen!, ich mache mein mittel Commit und korrigiere was nötig sein könnte
+            ShowAnimalsInZoo(listZoos.SelectedIndex); 
 
         }
 
-        //wir erstellen eine Methode um die Daten azuzeigen.
+        // wir erstellen eine Methode um die Zoos anzuzeigen.
         // in solche Methoden kann viel schief gehen... viele Exceptions könnte kommen, so am Besten IMMER mit try and catch blocks arbeiten.
         public void ShowZoos()
         {
@@ -142,6 +146,48 @@ namespace WPF_DB_ZooManager
                 MessageBox.Show(e.ToString(), exceptionTitle, MessageBoxButton.OK,MessageBoxImage.Exclamation);
             }
             
+        }
+
+
+        // ICH VERSUCHE zu erstellen: eine Methode um die Animals in einem Zoo anzuzeigen.
+        // IMMER mit try and catch blocks arbeiten.
+        public void ShowAnimalsInZoo(int zooId)
+        {
+            try
+            {
+                string query = $"SELECT a.Name FROM Animal a INNER JOIN ZooAnimal za on a.Id = za.AnimalId WHERE za.ZooId = {zooId}";     
+                // wir setzen einfach den NEUEN SQL Query inhalt in ein string.
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, sqlConnection);   
+                // SqlDataAdapter mit unsere Query und die Connection...
+                // damit können wir die DB Tabelle als ein C# Objekt verwenden!
+
+                using (sqlDataAdapter)
+                {
+                    //hier können wir die DataTable verwenden...
+                    DataTable animalsZooTable = new DataTable();
+                    sqlDataAdapter.Fill(animalsZooTable);      //zooTable bekommt die Tabelle von DB
+
+
+                    //listAnimalsZoo ist der Name unserer ListBox...:
+                    //welche Informationen der Tabelle in unserem DataTablesollen in unsere Listbox angezeigt werden
+                    listAnimalsZoo.DisplayMemberPath = "Name";  
+                    // HIER HATTE ICH IMMER NOCH LOCATION,DESWEGEN BLIEB ES LEER!!
+                    //welche Wert soll gegeben werden, wenn eines unsere Items von der ListBox ausgewählt wird
+                    listAnimalsZoo.SelectedValuePath = "Id";
+
+                    /// festlegen dass DataTable ruft die Tabelle zooTable, 
+                    /// die eigentlich von unserer adapter kommt, und deren Query "SELECT * FROM Zoo"
+                    /// war in der ConnectionString zu unserer DB
+                    listAnimalsZoo.ItemsSource = animalsZooTable.DefaultView;
+                }
+
+            }
+            catch (Exception e)
+            {
+                string exceptionTitle = "WIR HABEN EINE EXCEPTION AUSGELÖST! App nicht richtig geladen!";
+                MessageBox.Show(e.ToString(), exceptionTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+
         }
     }
 }
