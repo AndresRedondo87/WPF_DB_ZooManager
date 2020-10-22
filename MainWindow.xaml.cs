@@ -113,7 +113,7 @@ namespace WPF_DB_ZooManager
             try
             {
                 //string query = "SELECT * FROM Zoo2"; //UM DIE EXCEPTIONS TRYCATCH TESTEN
-                string query = "SELECT * FROM Zoo2";     //wir setzen einfach den SQL Query inhalt in ein string.
+                string query = "SELECT * FROM Zoo";     //wir setzen einfach den SQL Query inhalt in ein string.
                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, sqlConnection);   //SqlDataAdapter mit unsere Query und die Connection...
                                                                                             //damit können wir die DB Tabelle als ein C# Objekt verwenden!
 
