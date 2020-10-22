@@ -306,7 +306,12 @@ namespace WPF_DB_ZooManager
         private void DeleteZoo_Click(object sender, RoutedEventArgs e)
         {
             //MessageBox.Show("Lösche Zoo");
-
+            /// kein "leere" Löschung vermeiden.
+            if (listZoos.SelectedItem == null)
+            {
+                MessageBox.Show("First you need to select a Zoo to delete!");
+                return;
+            }
             try
             {
                 string query = "DELETE FROM Zoo WHERE Id = @ZooId";
@@ -497,6 +502,12 @@ namespace WPF_DB_ZooManager
         private void DeleteAnimal_Click(object sender, RoutedEventArgs e)
         {
             // copypaste von delete Z o o
+            /// kein "leere" Löschung vermeiden.
+            if (listAllAnimals.SelectedItem == null)
+            {
+                MessageBox.Show("First you need to select an Animal to delete!");
+                return;
+            }
             try
             {
                 string query = "DELETE FROM Animal WHERE Id = @AnimalId";
