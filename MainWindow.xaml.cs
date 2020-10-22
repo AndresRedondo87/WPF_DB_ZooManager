@@ -27,7 +27,7 @@ namespace WPF_DB_ZooManager
         /// Datenbank Verbindung mit den ConnectionString
         /// es braucht zuerst ein "using System.Data.SqlClient;    // für SQL Verbindung" ganz oben hinzugefügt zu bekommen.
         /// Hier deklariert so wir es in unsere neue Methoden verwenden können!
-        SqlConnection sqlConnection;
+        readonly SqlConnection sqlConnection;
         public MainWindow()
         {
 
@@ -288,7 +288,7 @@ namespace WPF_DB_ZooManager
 
         }
 
-        private void listZoos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListZoos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             /// MessageBox.Show(listZoos.SelectedValue.ToString());
             /// ZwischenStep zum bestätigen der ZooId, nicht mehr nötig
@@ -297,13 +297,13 @@ namespace WPF_DB_ZooManager
             ShowAssociatedAnimals();
         }
 
-        private void listAnimals_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListAnimals_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //NOCH NICHTS HIER?, ich glaube nicht, sein Wert wird einfach via listAnimals.SelectedValue aufrufbar sein!
         }
 
 
-        private void deleteZoo_Click(object sender, RoutedEventArgs e)
+        private void DeleteZoo_Click(object sender, RoutedEventArgs e)
         {
             //MessageBox.Show("Lösche Zoo");
 
@@ -337,7 +337,7 @@ namespace WPF_DB_ZooManager
 
 
         }
-        private void removeAnimal_Click(object sender, RoutedEventArgs e)
+        private void RemoveAnimal_Click(object sender, RoutedEventArgs e)
         {
             ///  selber copypaste-Versuch: 
             /// MessageBox.Show("Remove Animal from Zoo"); //geht
@@ -382,7 +382,7 @@ namespace WPF_DB_ZooManager
                 ShowAssociatedAnimals(); //anzeige aktualisieren
             }
         }
-        private void addZoo_Click(object sender, RoutedEventArgs e)
+        private void AddZoo_Click(object sender, RoutedEventArgs e)
         {
             if(myTextBox.Text == string.Empty)  //kein "leer" Zoo Eintrag erlaubt
             {
@@ -413,12 +413,12 @@ namespace WPF_DB_ZooManager
 
 
         }
-        private void updateZoo_Click(object sender, RoutedEventArgs e)
+        private void UpdateZoo_Click(object sender, RoutedEventArgs e)
         {
             ShowZoos();// anzeige aktualisieren
             MessageBox.Show("Zoo table updated!");
         }
-        private void addAnimal_Click(object sender, RoutedEventArgs e)
+        private void AddAnimal_Click(object sender, RoutedEventArgs e)
         {
             // genauso Wie Zoo aber mit Animal, selber copypasted:
             if (myTextBox.Text == string.Empty)  //kein "leer" Animal Eintrag erlaubt
@@ -447,12 +447,12 @@ namespace WPF_DB_ZooManager
                 ShowAllAnimals();// anzeige aktualisieren
             }
         }
-        private void updateAnimal_Click(object sender, RoutedEventArgs e)
+        private void UpdateAnimal_Click(object sender, RoutedEventArgs e)
         {
             ShowAllAnimals();// anzeige aktualisieren
             MessageBox.Show("Animal table updated!");
         }
-        private void addAnimalToZoo_Click(object sender, RoutedEventArgs e)
+        private void AddAnimalToZoo_Click(object sender, RoutedEventArgs e)
         {
             //  selber copypaste-Versuch: FAST PERFEKT gekriegt!
             if (listAllAnimals.SelectedItem == null || listZoos.SelectedItem == null)  //kein "leere" Zuweisung erlaubt
@@ -494,7 +494,7 @@ namespace WPF_DB_ZooManager
                 ShowAssociatedAnimals(); //anzeige aktualisieren
             }
         }
-        private void deleteAnimal_Click(object sender, RoutedEventArgs e)
+        private void DeleteAnimal_Click(object sender, RoutedEventArgs e)
         {
             // copypaste von delete Z o o
             try
