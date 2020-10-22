@@ -195,7 +195,14 @@ namespace WPF_DB_ZooManager
         /// Es funktioniert da die  listZoos.SelectedValue braucht nicht als Parameter übergegeben sein sondern es ist einfach da!
 
         public void ShowAssociatedAnimals()
-        { 
+        {
+            // Beim Zoo löschen wird hier eine Exception geworfen, da listZoos.SelectedValue leer wird.
+            // um es umzugehen einfach mit einem IF vermeiden.
+            if (listZoos.SelectedValue == null)
+            {
+                return;//einfach diese Methode verlassen
+                //könnte man auch das ganze in ein if (listZoos.SelectedValue != null) reinpachen, dies hier ist aber einfacher :)
+            }
             try
             {
                 /*
@@ -291,6 +298,70 @@ namespace WPF_DB_ZooManager
         }
 
         private void listAnimals_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //NOCH NICHTS HIER?, ich glaube nicht, sein Wert wird einfach via listAnimals.SelectedValue aufrufbar sein!
+        }
+
+
+        private void deleteZoo_Click(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show("Lösche Zoo");
+
+            try
+            {
+                string query = "DELETE FROM Zoo WHERE Id = @ZooId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                //sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedValuePath); //FALSCH beim Autofill aufpassen!!
+                sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedValue);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception ex)    //e ist schon verwendet...
+            {
+                MessageBox.Show(ex.ToString(), "exception in Delete Zoo Button", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                //verbindung MUSS geschlossen werden.
+                sqlConnection.Close();
+                ShowZoos();// anzeige aktualisieren um zu sehen dass es doch gelöscht worden ist
+            }
+            /// Nachdem ein Zoo gelöscht aus Zoo Tabelle wird,die Entsprechende einträgen unter ZooAnimal
+            /// müssen auch entsprechend gelöscht/ignoriert werden.
+            /// Dafür geht er zu ZooAnimal rechtemaus/Tabellendefinition öffnen und da hat er folgendes hinzugefügt:
+            /// PRIMARY KEY CLUSTERED([Id] ASC),        /// WAR SCHON DA!!!
+            /// --vor den CONSTRAIST für die FOREIGN KEYS.
+            /// UND UN DER Zoo Fk wird am Ende "ON DELETE CASCADE" hinzugefügt.
+            /// EIGENTLICH AUF BEIDE FK, auch für ANIMALS hinzugefügt.
+            /// Damit wird, wenn ein Zoo/animal gelöscht wird, wird ALLES was zu ihn verbunden ist auch gelöscht!! SEHR VORSICHTIG ANWENDEN!!
+
+
+        }
+        private void removeAnimal_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void addZoo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void updateZoo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void addAnimal_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void updateAnimal_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void addAnimalToZoo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void deleteAnimal_Click(object sender, RoutedEventArgs e)
         {
 
         }
