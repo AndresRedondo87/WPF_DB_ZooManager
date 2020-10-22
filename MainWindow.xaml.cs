@@ -356,6 +356,7 @@ namespace WPF_DB_ZooManager
                 sqlConnection.Open();
                 sqlCommand.Parameters.AddWithValue("@Location", myTextBox.Text); 
                 sqlCommand.ExecuteScalar();
+                // sqlCommand.ExecuteScalar NICHT VERGESSEN! SONST WIRD DEN COMMANDO NIE AUSGEFÜHRT!
             }
             catch (Exception exe)
             {
@@ -373,15 +374,42 @@ namespace WPF_DB_ZooManager
         }
         private void updateZoo_Click(object sender, RoutedEventArgs e)
         {
-
+            ShowZoos();// anzeige aktualisieren
+            MessageBox.Show("Zoo table updated!");
         }
         private void addAnimal_Click(object sender, RoutedEventArgs e)
         {
-
+            // genauso Wie Zoo aber mit Animal, selber copypasted:
+            if (myTextBox.Text == string.Empty)  //kein "leer" Animal Eintrag erlaubt
+            {
+                MessageBox.Show("Add a new Name for the Animal!");
+                return;
+            }
+            try
+            {
+                //MessageBox.Show("Add Animal"); //geht
+                string query = "INSERT INTO Animal VALUES (@Name)";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@Name", myTextBox.Text);
+                sqlCommand.ExecuteScalar();
+                // sqlCommand.ExecuteScalar NICHT VERGESSEN! SONST WIRD DEN COMMANDO NIE AUSGEFÜHRT!
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show(exe.ToString(), "exception in Add Animal Button", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                //verbindung MUSS geschlossen werden.
+                sqlConnection.Close();
+                ShowAllAnimals();// anzeige aktualisieren
+            }
         }
         private void updateAnimal_Click(object sender, RoutedEventArgs e)
         {
-
+            ShowAllAnimals();// anzeige aktualisieren
+            MessageBox.Show("Animal table updated!");
         }
         private void addAnimalToZoo_Click(object sender, RoutedEventArgs e)
         {
