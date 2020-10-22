@@ -102,6 +102,7 @@ namespace WPF_DB_ZooManager
 
             //wir rufen die Methode um die Zoos angezeigt zu bekommen:
             ShowZoos();
+            ShowAllAnimals();
 
             /// ShowAssociatedAnimals(2);    //1 fest als test...
             /// Jetzt richtig als Selected ZooID Index...
@@ -113,7 +114,38 @@ namespace WPF_DB_ZooManager
             ///    ShowAssociatedAnimals((int)listZoos.SelectedValue);
             /// }
             /// EINFACH NICHT HIER AUFZURUFEN!!! SONDERN IN DER EVENT METHODE!!!!!
+            /// Die verbindete tiere unter ein Zoo werden nur aufgerufen wenn ein Zoo ausgewählt worden ist!!!!
             
+        }
+
+        // Selber erstellen eine Methode um die Animals anzuzeigen. try and catch blocks. 
+        public void ShowAllAnimals()
+        {
+            try
+            {
+                string query = "SELECT * FROM Animal";     
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, sqlConnection);   
+                using (sqlDataAdapter)
+                {
+                    DataTable animalTable = new DataTable();
+                    sqlDataAdapter.Fill(animalTable);
+                    //listAllAnimals ist der Name unserer ListBox...:
+                    //welche Informationen der Tabelle in unserem DataTablesollen in unsere Listbox angezeigt werden
+                    listAllAnimals.DisplayMemberPath = "Name";
+                    //welche Wert soll gegeben werden, wenn eines unsere Items von der ListBox ausgewählt wird
+                    listAllAnimals.SelectedValuePath = "Id";
+                    /// festlegen dass DataTable ruft die Tabelle animalTable, 
+                    /// die eigentlich von unserer adapter kommt, und deren Query "SELECT * FROM Animal"; war in der ConnectionString zu unserer DB
+                    listAllAnimals.ItemsSource = animalTable.DefaultView;
+                }
+
+            }
+            catch (Exception e)
+            {
+                string exceptionTitle = "ANIMALS HABEN EINE EXCEPTION AUSGELÖST! App nicht richtig geladen!";
+                MessageBox.Show(e.ToString(), exceptionTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+
         }
 
         // wir erstellen eine Methode um die Zoos anzuzeigen.
@@ -256,6 +288,11 @@ namespace WPF_DB_ZooManager
             //ShowAssociatedAnimals((int)listZoos.SelectedValue);
             //casting als int auch nötig, das geht aber er macht es OHNE PARAMETER!!
             ShowAssociatedAnimals();
+        }
+
+        private void listAnimals_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
