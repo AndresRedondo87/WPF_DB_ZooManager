@@ -23,3 +23,6 @@ DELETE FROM ZooAnimal WHERE ZooId = 2 AND AnimalId = 6; --löscht ALLE tiere von
 
 DELETE TOP (1) FROM ZooAnimal WHERE ZooId = 2 AND AnimalId = 6;----löscht NUR EINE tiere von ein Art aus einem Zoo
 SELECT *FROM ZooAnimal WHERE ZooId = 2 AND AnimalId = 6;
+
+--Beispiel für ShowSelectedAssociatedAnimalInTextBox
+SELECT Name FROM ZooAnimal INNER JOIN Animal ON ZooAnimal.AnimalId = Animal.Id WHERE Animal.Id = 5

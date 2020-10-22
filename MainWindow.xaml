@@ -10,7 +10,7 @@
         <Label  Content="Zooliste" HorizontalAlignment="Left" Margin="20,6,0,0" VerticalAlignment="Top" Height="31" Width="160" FontWeight="Bold"/>
         <ListBox Name="listZoos" SelectionChanged="ListZoos_SelectionChanged" HorizontalAlignment="Left" Margin="20,37,0,169" Width="114"/>
         <Label  Content="Tiere in augewähltem Zoo" HorizontalAlignment="Left" Margin="213,6,0,0" VerticalAlignment="Top" Height="31" Width="160" FontWeight="Bold"/>
-        <ListBox x:Name="listAssociatedAnimals" HorizontalAlignment="Left" Margin="213,37,0,169" Width="114"/>
+        <ListBox x:Name="listAssociatedAnimals" SelectionChanged="listAssociatedAnimals_SelectionChanged" HorizontalAlignment="Left" Margin="213,37,0,169" Width="114"/>
         <Label  Content="Tierliste" HorizontalAlignment="Right" Margin="0,6,10,0" VerticalAlignment="Top" Height="31" Width="160" FontWeight="Bold" d:LayoutOverrides="HorizontalAlignment"/>
         <ListBox x:Name="listAllAnimals" SelectionChanged="ListAnimals_SelectionChanged" HorizontalAlignment="Right" Margin="0,70,20,65" Width="150" d:LayoutOverrides="HorizontalAlignment"/>
 

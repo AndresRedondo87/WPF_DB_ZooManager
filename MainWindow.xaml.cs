@@ -295,11 +295,18 @@ namespace WPF_DB_ZooManager
             //ShowAssociatedAnimals((int)listZoos.SelectedValue);
             //casting als int auch nötig, das geht aber er macht es OHNE PARAMETER!!
             ShowAssociatedAnimals();
+            ShowSelectedZooInTextBox();//erweiterung von Lehrer, den Zoo Location in der Textbox übernehmen :)
         }
 
         private void ListAnimals_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //NOCH NICHTS HIER?, ich glaube nicht, sein Wert wird einfach via listAnimals.SelectedValue aufrufbar sein!
+            ShowSelectedAnimalInTextBox(); //erweiterung von Lehrer, den Animal Name in der Textbox übernehmen :)
+        }
+
+        private void listAssociatedAnimals_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShowSelectedAssociatedAnimalInTextBox();//erweiterung von Lehrer, den Animal Name in der Textbox übernehmen :)
         }
 
 
@@ -529,5 +536,100 @@ namespace WPF_DB_ZooManager
                 ShowAssociatedAnimals();//brnötigt auch aktualisiert zu werden sein! NICHT VERGESSEN!!
             }
         }
+
+        private void ShowSelectedZooInTextBox()
+        {
+            /// kein "leere" anzeige vermeiden.
+            if (listZoos.SelectedItem == null)
+            {
+                MessageBox.Show("First you need to select a Zoo to display!");
+                return;
+            }
+            try
+            {
+                string query = "SELECT Location FROM Zoo Where Id = @ZooId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                using (sqlDataAdapter)
+                {
+                    sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedValue);
+                    DataTable zooDataTable = new DataTable();
+                    sqlDataAdapter.Fill(zooDataTable);
+
+                    // Rows 0 for Location da es einfach nur eine Linie haben wird, so einfach.
+                    myTextBox.Text = zooDataTable.Rows[0]["Location"].ToString();
+                }
+            }
+            catch (Exception exep)
+            {
+                MessageBox.Show(exep.ToString(), "exception in Show Selected Zoo In TextBox", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+        private void ShowSelectedAnimalInTextBox()
+        {
+            /// kein "leere" anzeige vermeiden.
+            if (listAllAnimals.SelectedItem == null)
+            {
+                MessageBox.Show("First you need to select an Animal to display!");
+                return;
+            }
+            try
+            {
+                string query = "SELECT Name FROM Animal Where Id = @AnimalId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                using (sqlDataAdapter)
+                {
+                    sqlCommand.Parameters.AddWithValue("@AnimalId", listAllAnimals.SelectedValue);
+                    DataTable animalDataTable = new DataTable();
+                    sqlDataAdapter.Fill(animalDataTable);
+
+                    // Rows 0 for Location da es einfach nur eine Linie haben wird, so einfach.
+                    myTextBox.Text = animalDataTable.Rows[0]["Name"].ToString();
+                }
+            }
+            catch (Exception exep)
+            {
+                MessageBox.Show(exep.ToString(), "exception in Show Selected Animal In TextBox", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
+        private void ShowSelectedAssociatedAnimalInTextBox()
+        {
+            /// kein "leere" anzeige vermeiden. HIER GAR NICHT NÖTIG ODER?
+            /// DOCH NÖTIG ABER OHNE MESSAGE BOX?
+            /// Das Problem in diese ListBox ist dass es auch geändert wird wenn neue Zoo ausgewählt wird.
+            /// deswegen beim Leere Anzeige einfach nichts machen.
+            if (listAssociatedAnimals.SelectedItem == null)
+            {
+                //MessageBox.Show("First you need to select an Associated Animal to display!");
+                return;
+            }
+            try
+            {
+                string query = "SELECT Name FROM ZooAnimal INNER JOIN Animal ON ZooAnimal.AnimalId = Animal.Id WHERE Animal.Id = @AnimalId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                using (sqlDataAdapter)
+                {
+                    sqlCommand.Parameters.AddWithValue("@AnimalId", listAssociatedAnimals.SelectedValue);
+                    DataTable animalDataTable = new DataTable();
+                    sqlDataAdapter.Fill(animalDataTable);
+
+                    // Rows 0 for Location da es einfach nur eine Linie haben wird, so einfach.
+                    myTextBox.Text = animalDataTable.Rows[0]["Name"].ToString();
+                }
+            }
+            catch (Exception exep)
+            {
+                MessageBox.Show(exep.ToString(), "exception in Show Selected Animal In TextBox", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
+
+        //...
     }
 }
