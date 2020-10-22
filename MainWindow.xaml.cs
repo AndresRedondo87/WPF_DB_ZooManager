@@ -343,6 +343,32 @@ namespace WPF_DB_ZooManager
         }
         private void addZoo_Click(object sender, RoutedEventArgs e)
         {
+            if(myTextBox.Text == string.Empty)  //kein "leer" Zoo Eintrag erlaubt
+            {
+                MessageBox.Show("Add a new Name for the Zoo!");
+                return;
+            }
+            try
+            {
+                //MessageBox.Show("Add Zoo"); //geht
+                string query = "INSERT INTO Zoo VALUES (@Location)";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@Location", myTextBox.Text); 
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show(exe.ToString(), "exception in Add Zoo Button", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                //verbindung MUSS geschlossen werden.
+                sqlConnection.Close();
+                ShowZoos();// anzeige aktualisieren
+            }
+
+
 
         }
         private void updateZoo_Click(object sender, RoutedEventArgs e)

@@ -28,7 +28,7 @@
         <Button x:Name="DeleteAnimal" Content="Delete Animal" HorizontalAlignment="Right" Margin="0,0,20,35" Width="150" Click="deleteAnimal_Click" VerticalAlignment="Bottom" d:LayoutOverrides="HorizontalAlignment"/>
 
         <Label x:Name="label" Content="Input new Zoo/Animal Name to add/update content:" FontSize="10"  HorizontalAlignment="Left" Margin="15,0,0,87" VerticalAlignment="Bottom" Height="22"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="21" Margin="20,0,0,65" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="307"/>
+        <TextBox x:Name="myTextBox" HorizontalAlignment="Left" Height="21" Margin="20,0,0,65" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="307"/>
 
 
     </Grid>
